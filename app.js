@@ -10,13 +10,36 @@ const resizeCanvas = () => {
 
 resizeCanvas();
 
+const shuffle = (arr) => {
+    let randomIndex = 0;
+
+    let currentIndex = arr.length;
+
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        let oldVal = Object.assign({}, arr[currentIndex]);
+        let newVal = Object.assign({}, arr[randomIndex]);
+
+        arr[currentIndex] = newVal;
+        arr[randomIndex] = oldVal;
+
+//        [arr[currentIndex], arr[randomIndex]]
+    }
+
+    return arr;
+};
+
+let flashingInterval;
+
 const renderWheel = (option, shouldFlash) => {
     const doRender = (textColor) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = option.color;
+        ctx.fillStyle = 'rgba(255, 255, 255, 255)';//option.color;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = textColor;
-        ctx.font = '144px sans-serif';
+        ctx.font = '16vw ayo';//sans-serif';
 
         const textInfo = ctx.measureText(option.text);
 
@@ -26,66 +49,97 @@ const renderWheel = (option, shouldFlash) => {
     }
 
     if (shouldFlash) {
-        let flip = false;//'rgba(255, 255, 255, 255)';
-        setInterval(() => {
+        let flip = false;
+        flashingInterval = setInterval(() => {
             flip = !flip;
-            doRender(flip ? 'rgba(255, 255, 255, 255)' : '#fcd303');
+            doRender(flip ? option.color : '#fcd303');
         }, 250);
     } else {
-        doRender('rgba(255, 255, 255, 255)');
+        doRender(option.color);
     }
 };
 
+let spinning = false;
+
 const spin = () => {
+    if (spinning) {
+        return;
+    }
+    
+    if (flashingInterval) {
+        clearInterval(flashingInterval);
+    }
+
+
+    spinning = true;
+
     const options = [
     {
-        text: 'ayy',
+        text: '$1 off purchase',
         color: '#fc4103',
+        chance: 35
     },
     {
-        text: 'lmao',
-        color: '#c2fc03'
+        text: 'Free mega sticker',
+        color: '#c2fc03',
+        chance: 35
     },
     {
-        text: 'hmmm',
-        color: '#03fcb1'
+        text: 'Free mini cookie',
+        color: '#03fcb1',
+        chance: 20
     },
     {
-        text: 'bbbfbbdsf',
-        color: '#7f03fc'
+        text: 'Free full-sized cookie',
+        color: '#7f03fc',
+        chance: 5
     },
     {
-        text: 'llllll',
-        color: '#fc0330'
+        text: '$5 gift card',
+        color: '#fc0330',
+        chance: 0
     }];
 
     const cycles = 14;
 
     const finish = () => {
+        //setTimeout(() => {
+            spinning = false;
+            cycleCount = 0;
+        //}, 5000);
     };
 
     let cycleCount = 0;
 
+    // distribute options in an array
+    let actualOptions = [];
+    options.forEach(option => {
+        for (let i = 0; i < option.chance; i++) {
+            actualOptions.push(Object.assign({}, option));
+        }
+    });
+    
+    actualOptions = shuffle(actualOptions);
+ 
     const cycle = () => {
-        if (cycleCount >= cycles) {
-            finish();
-        } else {
-        
-            let optionIndex = Math.floor(Math.random() * options.length);
-            const option = options[optionIndex];
+        console.log('called cycle!!! ' + cycleCount);
+        if (cycleCount < cycles) {
+            let optionIndex = Math.floor(Math.random() * (cycleCount + 1 === cycles ? actualOptions : options).length);
+            const optionsToUse = cycleCount + 1 === cycles ? actualOptions : options;
+            const option = optionsToUse[optionIndex];
             renderWheel(option, cycleCount + 1 === cycles);
 
             cycleCount++;
             
-            let timeout = 300;//500;
+            let timeout = 300;
 
             if (cycleCount < 6) {
                 timeout = 200;
-            } else if (cycleCount < 11) {
-//                timeout = 300;
             }
 
-            setTimeout(cycle, 250);//timeout);/// (cycleCount + 1));
+            setTimeout(cycle, 250);
+        } else {
+            finish();
         }
     }
 
