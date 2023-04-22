@@ -1,9 +1,11 @@
-body {
-    background: red;
-    margin: 0;
-}
-
 @font-face {
     font-family: ayo;
     src: url('fonts/boinqster.otf') format('opentype');
 }
+
+body {
+    margin: 0;
+    font-family: "ayo";
+}
+
+
