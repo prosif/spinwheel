@@ -62,7 +62,7 @@ const renderWheel = (option, shouldFlash) => {
         ctx.fillStyle = 'rgba(255, 255, 255, 255)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = textColor;
-        ctx.font = '16vw ayo';
+        ctx.font = option.text.length > 20 ? (option.text.length > 30 ? '10vw ayo' : '12vw ayo') : '16vw ayo';
 
         const textInfo = ctx.measureText(option.text);
 
@@ -104,19 +104,19 @@ const spin = () => {
 
     const options = [
     {
-        text: '$1 off purchase',
+        text: 'Free delivery on any online order',
         color: '#fc4103',
-        chance: 35
+        chance: 15
     },
     {
-        text: 'Free mega sticker',
+        text: '10% off online order',
         color: '#c2fc03',
-        chance: 35
+        chance: 20
     },
     {
-        text: 'Free mini cookie',
+        text: '$10 off online order of $30',
         color: '#03fcb1',
-        chance: 20
+        chance: 5
     },
     {
         text: 'Free full-sized cookie',
@@ -124,9 +124,19 @@ const spin = () => {
         chance: 5
     },
     {
-        text: '$5 gift card',
+        text: 'Free mini cookie',
+        color: '#7f03fc',
+        chance: 10
+    }, 
+    {
+        text: 'Free laptop sticker',
         color: '#fc0330',
-        chance: 5
+        chance: 25
+    },
+    {
+        text: '2 cookies for $4',
+        color: '#fc0330',
+        chance: 20
     }];
 
     const cycles = 14;
