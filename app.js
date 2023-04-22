@@ -114,11 +114,6 @@ const spin = () => {
         chance: 20
     },
     {
-        text: '$10 off online order of $30',
-        color: '#03fcb1',
-        chance: 5
-    },
-    {
         text: 'Free full-sized cookie',
         color: '#7f03fc',
         chance: 5
@@ -126,7 +121,7 @@ const spin = () => {
     {
         text: 'Free mini cookie',
         color: '#7f03fc',
-        chance: 10
+        chance: 15
     }, 
     {
         text: 'Free laptop sticker',
